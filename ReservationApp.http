@@ -1,0 +1,31 @@
+### POST request
+POST http://localhost:8080/v1/reservation
+Content-Type: application/json
+
+{
+  "userContactNumber":"3126192978",
+  "restaurantContactNumber":"99999999",
+  "startTime":1000,
+  "duration":2,
+  "numberOfPerson":5
+}
+
+### POST request
+POST http://localhost:8080/v1/reservation
+Content-Type: application/json
+
+{
+  "userContactNumber":"3126198771",
+  "restaurantContactNumber":"99999999",
+  "startTime":1000,
+  "duration":2,
+  "numberOfPerson":5
+}
+
+### GET request that fetches reservation by id
+GET http://localhost:8080/v1/reservation/4
+Content-Type: application/json
+
+###
+
+
