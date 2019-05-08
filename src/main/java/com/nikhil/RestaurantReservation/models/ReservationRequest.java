@@ -9,5 +9,4 @@ public class ReservationRequest {
     private int startTime;
     private int duration;
     private int numberOfPerson;
-
 }

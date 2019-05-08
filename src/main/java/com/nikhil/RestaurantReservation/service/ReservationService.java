@@ -67,9 +67,36 @@ public class ReservationService {
     public Reservation getReservationById(Long reservationId) {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
 
-        if(!reservation.isPresent()){
+        checkReservationAndThrowException(reservation);
+
+        return reservation.get();
+    }
+
+
+    public Reservation updateReservation(ReservationRequest reservationRequest, Long reservationId) {
+
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+
+        checkReservationAndThrowException(reservation);
+
+        Reservation resrv = reservation.get();
+        resrv.setActive(true);
+        resrv.setEndTime(reservationRequest.getStartTime()+ reservationRequest.getDuration());
+        resrv.setNumberOfPerson(reservationRequest.getNumberOfPerson());
+        resrv.setStartTime(reservationRequest.getStartTime());
+        resrv.setUser(userRepository.findByContactNumber(reservationRequest.getUserContactNumber()));
+        resrv.setRestaurant(restaurantRepository.findByContactNumber(reservationRequest.getRestaurantContactNumber()));
+        return reservationRepository.save(resrv);
+    }
+
+
+    private void checkReservationAndThrowException(Optional<Reservation> reservation) {
+        if (!reservation.isPresent()) {
             throw new InvalidReservationException(INVALID_RESERVATION_ID.getMessage());
         }
-        return reservation.get();
+    }
+
+    public void deleteReservation(Long reservationId) {
+        reservationRepository.deleteById(reservationId);
     }
 }

@@ -7,11 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.websocket.server.PathParam;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/reservation")
 public class ReservationController {
 
     final private ReservationService reservationService;
@@ -20,8 +19,8 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @PostMapping(path = "/reservation")
-    public ResponseEntity<Integer> bookReservation(@RequestBody ReservationRequest reservationRequest){
+    @PostMapping
+    public ResponseEntity<Integer> bookReservation(@RequestBody ReservationRequest reservationRequest) {
         Long reservation = reservationService.bookReservation(reservationRequest);
 
 
@@ -34,10 +33,23 @@ public class ReservationController {
         return ResponseEntity.created(savedUserUri).build();
     }
 
-    @GetMapping(path = "/reservation/{reservationId}")
-    public ResponseEntity<Reservation> getReservation(@PathVariable Long reservationId){
+    @GetMapping(path = "/{reservationId}")
+    public ResponseEntity<Reservation> getReservation(@PathVariable Long reservationId) {
         Reservation reservation = reservationService.getReservationById(reservationId);
         return ResponseEntity.ok(reservation);
+    }
+
+    @PutMapping(path = "/{reservationId}")
+    public ResponseEntity<Integer> updateReservation(@RequestBody ReservationRequest reservationRequest,
+                                                     @PathVariable Long reservationId) {
+        reservationService.updateReservation(reservationRequest, reservationId);
+        return ResponseEntity.status(204).build();
+    }
+
+    @DeleteMapping(path = "/{reservationId}")
+    public ResponseEntity<Integer> updateReservation(@PathVariable Long reservationId) {
+        reservationService.deleteReservation(reservationId);
+        return ResponseEntity.status(200).build();
     }
 
 }
